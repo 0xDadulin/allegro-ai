@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block body%}
+
+<div class="container">
+  <h2>Prześlij swoje CV</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Prześlij</button>
+  </form>
+</div>
+
+
+{% endblock %}
