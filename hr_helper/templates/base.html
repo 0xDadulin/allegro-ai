@@ -37,31 +37,40 @@
   </div>
 {% endif %}
 
-    <ul class="nav justify-content-center">
-  <li class="nav-item">
-    <a class="nav-link active" aria-current="page" href="{% url 'generuj-opis' %}">List motywacyjny</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" href="#">Tekst do zgłoszenia </a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" href="#">Instrukcja obsługi</a>
-  </li>
-  {% if not user.is_authenticated %}
-  <li class="nav-item">
-    <a class="nav-link" href="{% url 'signup' %}">Rejestracja</a>
-  </li>
-  {% endif %}
-  <li class="nav-item">
-    <a class="nav-link" href="{% url 'login' %}">Zaloguj</a>
-  </li>
-  {% if user.is_authenticated %}
-  <li class="nav-item">
-    <a class="nav-link" href="{% url 'logout' %}">Wyloguj</a>
-  </li>
-  {% endif %}
-  <br><br><br><br><br><br>
-</ul>
+    <nav class="navbar navbar-expand-lg bg-black fixed-top ">
+  <div class="container">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link text-white fw-bold " href="{% url 'generuj-opis' %}">Wygeneruj opis</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white fw-bold" href="{% url 'opis_list' %}">Twoje opisy</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white fw-bold" href="#">Instrukcja obsługi</a>
+        </li>
+        {% if not user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link text-white fw-bold" href="{% url 'signup' %}">Rejestracja</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white fw-bold" href="{% url 'login' %}">Zaloguj</a>
+          </li>
+        {% endif %}
+        {% if user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link text-white fw-bold" href="{% url 'logout' %}">Wyloguj</a>
+          </li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>
+<br><br><br><br><br><br>
     {%block body%}
     {%endblock%}
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>

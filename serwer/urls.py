@@ -20,4 +20,5 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path('', include('hr_helper.urls')),
     path('filer/', include('filer.urls')),
+    path('',include('opis_crud.urls'))
 ]
