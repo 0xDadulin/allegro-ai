@@ -1,41 +1,38 @@
-prompt1 = """Jesteś ekspertem w dziedzinie e-commerce, a Twoim zadaniem jest optymalizacja tytułów i opisów produktów w taki sposób, aby były atrakcyjne dla klientów i zachęcały do zakupu. Przedstaw swój wynik w poniższym formacie:
+def get_prompt(zastosowanie):
+    prompts = {
+        'opis_produktu': 'Jako profesjonalny copywriter, stwórz atrakcyjny opis dla {nazwa produktu} z {cechy produktu}.',
+        'artykul': 'Jako profesjonalny copywriter, napisz angażujący artykuł na bloga na temat {temat}.',
+        'recenzja': 'Jako ekspert w {branża}, napisz profesjonalną recenzję dla {produkt/usługa}.',
+        'pomysly_na_artykul': 'Jesteś kreatywnym generatorem pomysłów na artykuły blogowe. Wymyśl różnorodne propozycje na temat {temat}.',
+        'nazwa_dla_firmy': 'Jesteś ekspertem w tworzeniu nazw dla firm i projektów. Stwórz unikalną i kreatywną nazwę dla {opis firmy/projektu}.',
+        'pomysly_na_firme': 'Jako specjalista w generowaniu pomysłów na startupy, podaj innowacyjne propozycje związane z branżą, która przekaże ci użytkownik.',
+        'wezwanie_do_dzialania': 'Jako doświadczony copywriter, stwórz przekonujące wezwanie do działania dla {produkt/usługa}.',
+        'list_motywacyjny': 'Jesteś ekspertem w pisaniu listów motywacyjnych. Napisz list motywacyjny dla {stanowisko} w {nazwa firmy}.',
+        'email': 'Jako profesjonalny redaktor, sformułuj {typ emaila} dotyczący {temat}.',
+        'reklama': 'Jako specjalista ds. reklamy w mediach społecznościowych, stwórz krótki tekst reklamowy promujący {produkt/usługa} na {platforma}.',
+        'pytania_do_wywiadu': 'Jesteś ekspertem w tworzeniu pytań do wywiadów. Wymyśl interesujące pytania na wywiad z {imię i nazwisko} na temat {temat}.',
+        'opis_oferty_pracy': 'Jako doświadczony copywriter, napisz opis stanowiska dla {stanowisko} w {nazwa firmy}.',
+        'generator_slow_kluczowych': 'Jako specjalista SEO, podaj listę słów kluczowych związanych z {temat}.',
+        'pomysly_na_posty': 'Jesteś kreatywnym generatorem pomysłów na posty w mediach społecznościowych. Zaproponuj angażujące posty dla {nazwa firmy/profil} na {platforma}.',
+        'opis_profilu': 'Jesteś ekspertem w pisaniu opisów profilu. Napisz krótki i kreatywny opis profilu dla {imię i nazwisko} na {platforma}.',
+        'pytania_i_odpowiedzi': 'Jako specjalista w dziedzinie {temat}, odpowiedz na 5 najczęściej zadawanych pytań dotyczących {temat}.',
+        'odpowiedz_na_recenzje': 'Jako profesjonalny specjalista ds. obsługi klienta, napisz odpowiedź na {typ recenzji/wiadomości} dotyczącą {produkt/usługa}.',
+        'seo_meta_tytul': 'Jako ekspert SEO, stwórz optymalny meta tytuł dla strony internetowej na temat {temat}.',
+        'seo_meta_opis': 'Jako ekspert SEO, napisz efektywny meta opis dla strony internetowej na temat {temat}.',
+        'tekst_piosenki': 'Jesteś utalentowanym tekściarzem. Napisz tekst piosenki na temat {temat} w stylu {gatunek muzyczny}.',
+        'zaswiadczenie': 'Jako ekspert w {branża}, napisz profesjonalną recenzję dla {produkt/usługa}.',
+        'yt_opis_kanalu': 'Jako specjalista ds. treści wideo, stwórz angażujący opis kanału YouTube dla {nazwa kanału} na temat {temat}.',
+        'yt_opis_filmu': 'Jako specjalista ds. treści wideo, napisz interesujący opis filmu YouTube dla {nazwa filmu} na temat {temat}.',
+        'yt_pomysly_na_film': 'Jesteś kreatywnym generatorem pomysłów na filmy YouTube. Wymyśl różnorodne propozycje na temat {temat} dla {nazwa kanału}.'
+    }
 
-Tytuł: (Ulepszony, unikalny tytuł wygenerowany na podstawie przesłanego tytułu)
-Opis: (Ulepszony opis)
+    if zastosowanie in prompts:
+        return prompts[zastosowanie]
+    else:
+        return "Nieznane zastosowanie."
 
-Zwracany tekst powinien być w formacie HTML, z zastosowaniem formatowania, takiego jak pogrubienie, wypunktowanie, podkreślenie oraz innych elementów. Ulepsz podany tytuł i opis produktu, korzystając z różnych technik formatowania.
 
-Przykład:
-
-Tytuł: Stary tytuł: "Buty sportowe męskie rozmiar 42"
-
-Ulepszony tytuł: "Ekskluzywne Buty Sportowe Męskie w Rozmiarze 42 - Idealne dla Aktywnych Mężczyzn!"
-
-Opis: Stary opis: "Buty sportowe męskie, rozmiar 42, kolor czarny. Idealne do biegania i innych sportów."
-
-Ulepszony opis:<p><strong>Ekskluzywne Buty Sportowe Męskie w Rozmiarze 42</strong> - idealne dla aktywnych mężczyzn, którzy cenią sobie komfort i wygodę podczas biegania czy uprawiania innych sportów. <u>Nie przegap okazji!</u></p>
-
-<ul>
-  <li><strong>Kolor:</strong> Czarny - uniwersalny i stylowy</li>
-  <li><strong>Rozmiar:</strong> 42 - sprawdź tabelę rozmiarów, aby dopasować idealnie</li>
-  <li><strong>Materiał:</strong> Wysokiej jakości materiały, zapewniające oddychalność i trwałość</li>
-  <li><strong>Wygodne:</strong> Lekkie, elastyczne i amortyzujące - dla pełnego komfortu podczas ćwiczeń</li>
-  <li><strong>Wszechstronne:</strong> Idealne do biegania, treningów na siłowni, gier zespołowych i wielu innych aktywności</li>
-</ul>
-
-<p>Zapewnij sobie wyjątkowy komfort podczas treningów i zamów już dziś te <strong>Ekskluzywne Buty Sportowe Męskie w Rozmiarze 42</strong>!</p>
-Oczywiście, każdy tytuł i opis produktu będzie inny, ale kluczowym celem jest ulepszenie istniejących treści, aby były bardziej atrakcyjne dla klientów, stosując różne techniki formatowania."""
-
-prompt2 = """Tworzę opis sprzedażowy dedykowany dla Allegro.pl. Proszę o wygenerowanie atrakcyjnego opisu dla następującego produktu:
-- Nazwa produktu: [Nazwa produktu]
-- Kategoria produktu: [Kategoria, do której należy produkt]
-
-Proszę uwzględnić następujące elementy w opisie:
-1. Tytuł: Krótki, ale wpadający w oko tytuł, który przedstawia główną cechę produktu.
-2. Wstępny opis: Krótki opis produktu, który przedstawia ogólną wartość i korzyści.
-3. Krótki opis: Wymień najważniejsze cechy i funkcje produktu w postaci wypunktowanej listy.
-4. Długi opis: Szczegółowy opis produktu, który zawiera wszystkie kluczowe informacje, takie jak specyfikacje, materiały, zastosowania i dodatkowe cechy.
-5. Zachęta do zakupu: Końcowa zachęta, która podkreśla korzyści płynące z zakupu produktu i motywuje klienta do podjęcia decyzji o zakupie.
-
-Upewnij się, że opis jest atrakcyjny, przyciąga uwagę klientów i zawiera odpowiednie formatowanie, takie jak nagłówki, pogrubienie tekstu, listy i emoji.
-"""
+# Przykład użycia
+zastosowanie = 'pomysly_na_artykul'
+prompt = get_prompt(zastosowanie)
+print(prompt)

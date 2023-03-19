@@ -1,27 +1,27 @@
 # views.py
 from django.shortcuts import render, redirect, get_object_or_404
-from hr_helper.models import Opis
-from .forms import OpisForm
+from hr_helper.models import UlepszonyTekst
+from .forms import UlepszonyTekstForm
 
-# Listowanie opisów
-def opis_list(request):
-    opisy = Opis.objects.filter(user=request.user)
-    print(opisy)
-    return render(request, 'opis_list.html', {'opisy': opisy})
+# Listowanie ulepszonych tekstów
+def ulepszony_tekst_list(request):
+    ulepszone_teksty = UlepszonyTekst.objects.filter(uzytkownik=request.user)
+    print('chuj')
+    return render(request, 'ulepszony_tekst_list.html', {'ulepszone_teksty': ulepszone_teksty})
 
-# Strona szczegółów opisu
-def opis_detail(request, opis_id):
-    opis = get_object_or_404(Opis, id=opis_id, user=request.user)
-    return render(request, 'opis_detail.html', {'opis': opis})
+# Strona szczegółów ulepszonych tekstów
+def ulepszony_tekst_detail(request, tekst_id):
+    ulepszony_tekst = get_object_or_404(UlepszonyTekst, id=tekst_id, uzytkownik=request.user)
+    return render(request, 'ulepszony_tekst.html', {'ulepszony_tekst': ulepszony_tekst})
 
-# Edycja istniejącego opisu
-def opis_update(request, opis_id):
-    opis = get_object_or_404(Opis, id=opis_id, user=request.user)
+# Edycja istniejącego ulepszonych tekstów
+def ulepszony_tekst_update(request, tekst_id):
+    ulepszony_tekst = get_object_or_404(UlepszonyTekst, id=tekst_id, uzytkownik=request.user)
     if request.method == 'POST':
-        form = OpisForm(request.POST, instance=opis)
+        form = UlepszonyTekstForm(request.POST, instance=ulepszony_tekst)
         if form.is_valid():
             form.save()
-            return redirect('opis_detail', opis_id=opis.id)
+            return redirect('ulepszony_tekst_detail', tekst_id=ulepszony_tekst.id)
     else:
-        form = OpisForm(instance=opis)
-    return render(request, 'opis_form.html', {'form': form})
+        form = UlepszonyTekstForm(instance=ulepszony_tekst)
+    return render(request, 'ulepszony_tekst_form.html', {'form': form,'ulepszony_tekst':ulepszony_tekst})

@@ -5,41 +5,57 @@ from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 import os
+from .models import UlepszonyTekst
+from .forms import UlepszonyTekstForm
 from dotenv import load_dotenv
-from .models import Opis
+from .prompts import get_prompt
 
-from .prompts import prompt2
 load_dotenv()
 SECRET_KEY = os.getenv('SECRET_KEY')
 API_KEY = os.getenv('OPENAI_KEY')
 openai.api_key = API_KEY
 
+
 @login_required
 def generuj_opis(request):
-    ulepszony_opis = ''
-    title = request.POST.get('title')
-    ton = request.POST.get('ton')
-    dlugosc = request.POST.get('dlugosc')
-    tekst = request.POST.get('tekst')
-    settings = [title,ton,dlugosc,tekst]
-    if tekst != None:
-        print(f'tekst{tekst}')
-        ulepszony_opis = ulepsz_opis(ton, dlugosc, tekst, title)
-        opis_model = Opis(user=request.user, title=title, text=ulepszony_opis)
-        opis_model.save()
-        return HttpResponse(ulepszony_opis)
-    return render(request, 'index.html', {'opis': ulepszony_opis})
+    ulepszony_tekst = 'test'
+    if request.method == 'POST':
+        form = UlepszonyTekstForm(request.POST)
+        if form.is_valid():
+            ton = form.cleaned_data['ton']
+            zastosowanie = form.cleaned_data['zastosowanie']
+            tekst = form.cleaned_data['tekst']
+            system_prompt = get_prompt(zastosowanie)
+            # Przykład użycia funkcji ulepsz_opis
+            ulepszony_tekst = ulepsz_opis(ton, tekst,system_prompt)
 
-def ulepsz_opis(ton, dlugosc, tekst,title):
+            ulepszony_tekst_model = UlepszonyTekst(
+                uzytkownik=request.user,
+                ton=ton,
+                zastosowanie=zastosowanie,
+                tekst=tekst,
+                ulepszony_tekst=ulepszony_tekst,
+            )
+            ulepszony_tekst_model.save()
+
+            return HttpResponse(ulepszony_tekst)
+        else:
+            return HttpResponse('Błąd formularza', status=400)
+    form = UlepszonyTekstForm()
+
+    return render(request, 'index.html',context = {'form': form,'ulepszony': ulepszony_tekst})
+
+
+def ulepsz_opis(ton, tekst,system_prompt):
     # Wywołanie API OpenAI i przetworzenie tekstu
-    prompt = f"Ton opisu:{ton},długość:{dlugosc},opis produktu: {tekst}, tytuł:{title}"
+    prompt = f"Instrukcja dla gpt-3.5: {tekst},zastosuj taki ton wypowiedzi: {ton},"
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=[
             {"role": "system",
-             "content": prompt2},
+             "content": system_prompt},
             {"role": "user",
-             "content": prompt}
+             "content": tekst}
         ]
     )
     opis = response['choices'][0]['message']['content']

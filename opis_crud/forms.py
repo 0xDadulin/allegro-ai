@@ -1,7 +1,7 @@
 from django import forms
-from hr_helper.models import Opis
+from hr_helper.models import UlepszonyTekst
 
-class OpisForm(forms.ModelForm):
+class UlepszonyTekstForm(forms.ModelForm):
     class Meta:
-        model = Opis
-        fields = ['title', 'text']
+        model = UlepszonyTekst
+        fields = ['ulepszony_tekst']

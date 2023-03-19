@@ -6,9 +6,9 @@
       <div class="container col-xxl-6">
         <h1>Twoje opisy</h1>
         <div class="list-group">
-          {% for opis in opisy %}
-            <a href="{% url 'opis_detail' opis_id=opis.id %}" class="list-group-item list-group-item-action">
-              {{ opis.title }} | {{ opis.created_at }}
+          {% for tekst in ulepszone_teksty %}
+            <a href="{% url 'ulepszony_tekst_detail' tekst_id=tekst.id %}" class="list-group-item list-group-item-action">
+              {{ tekst.zastosowanie }} | {{ tekst.created_at }}
               <span class="badge bg-primary">Zobacz</span>
             </a>
           {% empty %}
