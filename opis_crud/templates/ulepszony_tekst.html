@@ -10,8 +10,12 @@
         <div class="card">
           <div class="card-body">
             <p>{{ ulepszony_tekst.ulepszony_tekst|safe }}</p>
-            {{ulepszony_tekst.id}}
           </div>
+          <ul>
+              <li>ID: {{ulepszony_tekst.id}}</li>
+              <li>Liczba słów: {{ ulepszony_tekst.liczba_slow }}</li>
+              <li>Liczba tokenów: {{ ulepszony_tekst.tokens }}</li>
+          </ul>
         </div>
         <a href="{% url 'ulepszony_tekst_update' tekst_id=ulepszony_tekst.id %}" class="btn btn-primary mt-3">Edytuj</a>
       </div>

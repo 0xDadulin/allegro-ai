@@ -6,7 +6,7 @@ from .forms import UlepszonyTekstForm
 # Listowanie ulepszonych tekstów
 def ulepszony_tekst_list(request):
     ulepszone_teksty = UlepszonyTekst.objects.filter(uzytkownik=request.user)
-    print('chuj')
+
     return render(request, 'ulepszony_tekst_list.html', {'ulepszone_teksty': ulepszone_teksty})
 
 # Strona szczegółów ulepszonych tekstów

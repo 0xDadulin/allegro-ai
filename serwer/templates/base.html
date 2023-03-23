@@ -1,4 +1,5 @@
 <!doctype html>
+
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -27,6 +28,8 @@
   type="text/javascript"
   src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.0.1/mdb.min.js"
 ></script>
+      {% load static %}
+<link rel="stylesheet" href="{% staticfiles 'css/styles.css' %}">
   </head>
 <body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
     {%block body%}
