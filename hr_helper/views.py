@@ -68,14 +68,14 @@ def generuj_opis(request):
 
 def ulepsz_opis(ton, tekst,system_prompt):
     # Wywołanie API OpenAI i przetworzenie tekstu
-    prompt = f"Instrukcja dla gpt-3.5: {tekst},zastosuj taki ton wypowiedzi: {ton},"
+    prompt = f"zastosuj taki ton odpowiedzi -> {ton}. Treść zapytania: {tekst}"
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=[
             {"role": "system",
              "content": system_prompt},
             {"role": "user",
-             "content": tekst}
+             "content": prompt}
         ]
     )
     opis = response['choices'][0]['message']['content']
@@ -89,7 +89,7 @@ def signup(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect('home')
+            return redirect('login')
     else:
         form = UserCreationForm()
     return render(request, 'signup.html', {'form': form})
@@ -105,6 +105,7 @@ def login_view(request):
         form = AuthenticationForm()
     return render(request, 'login.html', {'form': form})
 
+@login_required()
 def logout_view(request):
     if request.method == 'POST':
         logout(request)
@@ -176,7 +177,10 @@ def profil(request):
 
     #Statystyki użycia zastosowań
     Usage = namedtuple('Usage', ['name', 'count'])
-    zastosowania = UlepszonyTekst.objects.values_list('zastosowanie', flat=True)
+
+    # Dodaj filtr, aby pobrać tylko obiekty związane z zalogowanym użytkownikiem
+    zastosowania = UlepszonyTekst.objects.filter(uzytkownik=request.user).values_list('zastosowanie', flat=True)
+
     zastosowania_count = Counter(zastosowania)
     usages = []
 
@@ -191,8 +195,12 @@ def profil(request):
     user = request.user
     liczba_slow = UlepszonyTekst.objects.filter(uzytkownik=user).aggregate(Sum('liczba_slow'))['liczba_slow__sum'] or 0
 
-    zaoszczedzony_czas = (liczba_slow / 1000) * 60
-    zaoszczedzone_pieniadze = zaoszczedzony_czas * 20
+    zaoszczedzony_czas = round((liczba_slow / 10000) * 60, 2)
+    zaoszczedzone_pieniadze = round(zaoszczedzony_czas * 20, 2)
 
     return render(request, 'profil.html', {'wykres': div,'usages': usages,'zaoszczedzony_czas': zaoszczedzony_czas,
     'zaoszczedzone_pieniadze': zaoszczedzone_pieniadze})
+
+
+def landing_page(request):
+    return render(request, 'landing_page.html')
