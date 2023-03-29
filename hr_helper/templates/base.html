@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-<link rel="icon" href="https://i.imgur.com/Os1QTOr.png" sizes="16x16 32x32 64x64" type="image/png">
+    <link rel="icon" href="https://i.imgur.com/Os1QTOr.png" sizes="16x16 32x32 64x64" type="image/png">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Magiczne Pióro</title>
@@ -50,6 +50,7 @@
   --bs-body-color: #f8f9fa;
   --bs-body-bg: #212529;
 }
+
 
 
     </style>
@@ -104,7 +105,7 @@
                     <a class="nav-link" href="{% url 'generuj-opis' %}">Wygeneruj Tekst</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Instrukcja obsługi</a>
+                    <a class="nav-link" href="{% url 'instrukcja' %}">Instrukcja obsługi</a>
                 </li>
                 {% if not user.is_authenticated %}
                 <li class="nav-item">
@@ -120,35 +121,17 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'profil' %}">Profil</a>
-                </li><form method="post" action="{% url 'logout' %}">
-  {% csrf_token %}
-  <button type="submit" class="btn btn-link nav-link">Wyloguj</button>
-</form>
-                <li class="nav-item">
-                    <button id="theme-toggle" class="btn btn-sm btn-outline-secondary">Przełącz motyw</button>
                 </li>
-
+                <form method="post" action="{% url 'logout' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-link nav-link">Wyloguj</button>
+                </form>
                 {% endif %}
             </ul>
         </div>
     </div>
 </nav>
 {%block body%}
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const themeToggle = document.getElementById('theme-toggle');
-    const isDarkTheme = localStorage.getItem('darkTheme');
-
-    if (isDarkTheme === 'true') {
-        document.documentElement.classList.add('dark-theme');
-    }
-
-    themeToggle.addEventListener('click', function() {
-        document.documentElement.classList.toggle('dark-theme');
-        const isDarkTheme = document.documentElement.classList.contains('dark-theme');
-        localStorage.setItem('darkTheme', isDarkTheme.toString());
-    });
-});
 </script>
 {%endblock%}
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"

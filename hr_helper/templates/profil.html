@@ -15,37 +15,39 @@
     overflow-y: auto;
     position: relative;
     }
+
+
 </style>
 
 <div class="container-fluid">
     <div class="row">
         <!-- Lewa kolumna z zakładkami -->
-        <div class="col-md-2 flex-column py-3 px-0" style="background-color: #f8f9fa; border-right: 1px solid #ccc; height: calc(100vh - 50px); position: sticky; top: 50px;">
+        <div class="col-md-2 flex-column py-3 px-0"
+             style="background-color: #f8f9fa; border-right: 1px solid #ccc; height: calc(100vh - 50px); position: sticky; top: 50px;">
             <ul class="nav flex-column">
                 <li class="nav-item my-2 mb-2 border-bottom">
-                    <a class="nav-link" href="#" id="zuzycie-tab"><i class="bi bi-bar-chart-fill me-2"></i>🔋 Zużycie</a>
+                    <a class="nav-link" href="#" id="zuzycie-tab"><i class="bi bi-bar-chart-fill me-2"></i>🔋
+                        Zużycie</a>
                 </li>
                 <li class="nav-item my-2 mb-2 border-bottom">
-                    <a class="nav-link" href="#" id="statystyki-tab"><i class="bi bi-pie-chart-fill me-2"></i>📊 Statystyki</a>
+                    <a class="nav-link" href="#" id="statystyki-tab"><i class="bi bi-pie-chart-fill me-2"></i>📊
+                        Statystyki</a>
                 </li>
                 <li class="nav-item my-2 mb-2 border-bottom">
-                    <a class="nav-link" href="#" id="zarzadzanie-profilem-tab"><i class="bi bi-gear-fill me-2"></i>🔧 Ustawienia</a>
-                </li>
-                <li class="nav-item my-2 mb-2 border-bottom">
-                    <a class="nav-link" href="#" id="nagrody-tab"><i class="bi bi-award-fill me-2"></i>🏆 Nagrody</a>
-                </li>
-                <li class="nav-item my-2 mb-2 border-bottom">
-                    <a class="nav-link" href="#" id="afiliacja-tab"><i class="bi bi-handshake-fill me-2"></i>🤝 Afiliacja</a>
+                    <a class="nav-link" href="#" id="zarzadzanie-profilem-tab"><i class="bi bi-gear-fill me-2"></i>🔧
+                        Ustawienia</a>
                 </li>
             </ul>
         </div>
         <!-- Prawa kolumna z pustą przestrzenią -->
         <div class="col-md-10 py-3 px-4" id="content">
-            <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-            {{ wykres|safe }}
+            <div id="wykres-zuzycia">
+                <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+                {{ wykres|safe }}
+            </div>
             <!-- Zaoszczędzone zasoby -->
             <div class="container">
-                <h2 class="mt-5">Twoja podróż z Magicznym piórem</h2>
+                <h2 class="mt-5" id="statystyki-zastosowan">Twoja podróż z Magicznym piórem</h2>
                 <p class="lead">Uwielbiamy, jak produktywne są Twoje sesje korzystania z aplikacji i nie możemy się
                     doczekać, aby uczynić je jeszcze ciekawszymi. Oto niektóre statystyki z Twojego dotychczasowego
                     korzystania:</p>
@@ -82,11 +84,59 @@
                     {% endfor %}
                 </ul>
             </div>
+            <div class="container mt-5" id="zarzadzanie-profilem">
+                <h2 class="mt-5">Zmiana hasła</h2>
+                <form method="post" id="change-password-form">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="old_password">Stare hasło</label>
+                        <input type="password" class="form-control" id="old_password" name="old_password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="new_password1">Nowe hasło</label>
+                        <input type="password" class="form-control" id="new_password1" name="new_password1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="new_password2">Powtórz nowe hasło</label>
+                        <input type="password" class="form-control" id="new_password2" name="new_password2" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Zmień hasło</button>
+                </form>
+            </div>
 
         </div>
 
     </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+$(document).ready(function () {
+    function scrollToElement(element) {
+    const marginTop = 20;
+    $('#content').animate({
+        scrollTop: $(element).offset().top - $('#content').offset().top + $('#content').scrollTop() - marginTop
+    }, 500);
+}
+
+    $('#zuzycie-tab').click(function (e) {
+        e.preventDefault();
+        scrollToElement('#wykres-zuzycia');
+    });
+
+    $('#statystyki-tab').click(function (e) {
+        e.preventDefault();
+        scrollToElement('#statystyki-zastosowan');
+    });
+
+    $('#zarzadzanie-profilem-tab').click(function (e) {
+        e.preventDefault();
+        scrollToElement('#zarzadzanie-profilem');
+    });
+});
+
+
+</script>
 
 
 {% endblock %}

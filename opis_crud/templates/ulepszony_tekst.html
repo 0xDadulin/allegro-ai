@@ -3,22 +3,69 @@
 
 
 {% block body %}
-  <div class="container">
+<div class="container">
     <h2 class="my-4">{{ ulepszony_tekst.zastosowanie }}</h2>
     <div class="row justify-content-center">
-      <div class="col-md-6">
-        <div class="card">
-          <div class="card-body">
-            <p>{{ ulepszony_tekst.ulepszony_tekst|safe }}</p>
-          </div>
-          <ul>
-              <li>ID: {{ulepszony_tekst.id}}</li>
-              <li>Liczba słów: {{ ulepszony_tekst.liczba_slow }}</li>
-              <li>Liczba tokenów: {{ ulepszony_tekst.tokens }}</li>
-          </ul>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body" id="opis">
+                    <p>{{ ulepszony_tekst.ulepszony_tekst|safe }}</p>
+                </div>
+                <ul>
+                    <li>ID: {{ulepszony_tekst.id}}</li>
+                    <li>Liczba słów: {{ ulepszony_tekst.liczba_slow }}</li>
+                    <li>Liczba tokenów: {{ ulepszony_tekst.tokens }}</li>
+                </ul>
+            </div>
+            <a href="{% url 'ulepszony_tekst_update' tekst_id=ulepszony_tekst.id %}"
+               class="btn btn-primary mt-3">Edytuj</a>
+            <button id="toggle-ulubiony" class="btn btn-primary toggle-ulubiony"
+                    data-ulubiony="{{ ulepszony_tekst_model.ulubiony }}">
+
+                {% if ulepszony_tekst.ulubiony %}
+                Usuń z ulubionych
+                {% else %}
+                Dodaj do ulubionych
+                {% endif %}
+            </button>
         </div>
-        <a href="{% url 'ulepszony_tekst_update' tekst_id=ulepszony_tekst.id %}" class="btn btn-primary mt-3">Edytuj</a>
-      </div>
     </div>
-  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+
+    $("#toggle-ulubiony").click(function(event) {
+        event.preventDefault();
+        let btn = $(this);
+        let opis = $("#opis");
+        let pk = {{ulepszony_tekst.id}};
+        let ulubiony = btn.data("ulubiony");
+
+        $.ajax({
+            type: "POST",
+            url: "/toggle-ulubiony/" + pk + "/",
+            data: {
+                'csrfmiddlewaretoken': '{{ csrf_token }}'
+            },
+            success: function(response) {
+                ulubiony = !ulubiony;
+                btn.data("ulubiony", ulubiony);
+                if (ulubiony) {
+                    btn.text("Usuń z ulubionych");
+                } else {
+                    btn.text("Dodaj do ulubionych");
+                }
+            },
+            error: function(response) {
+                alert("Wystąpił błąd. Spróbuj ponownie.");
+            },
+        });
+    });
+
+
+</script>
 {% endblock %}
+
+

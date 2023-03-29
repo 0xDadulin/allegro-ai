@@ -4,6 +4,8 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib import messages
 import os
 from collections import defaultdict
 from .models import UlepszonyTekst
@@ -16,6 +18,7 @@ import json
 from django.http import JsonResponse
 from datetime import datetime, timedelta
 from django.shortcuts import render
+from django.contrib.auth import update_session_auth_hash
 from plotly.offline import plot
 import plotly.graph_objs as go
 from django.utils import timezone
@@ -198,9 +201,22 @@ def profil(request):
     zaoszczedzony_czas = round((liczba_slow / 10000) * 60, 2)
     zaoszczedzone_pieniadze = round(zaoszczedzony_czas * 20, 2)
 
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)
+            messages.success(request, 'Twoje hasło zostało zmienione!')
+            return redirect('profil')
+        else:
+            messages.error(request, 'Wystąpił błąd przy zmianie hasła.')
+
     return render(request, 'profil.html', {'wykres': div,'usages': usages,'zaoszczedzony_czas': zaoszczedzony_czas,
     'zaoszczedzone_pieniadze': zaoszczedzone_pieniadze})
 
 
 def landing_page(request):
     return render(request, 'landing_page.html')
+
+def instrukcja(request):
+    return render(request,'instrukcja.html')

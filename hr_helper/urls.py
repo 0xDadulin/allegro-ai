@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import signup, login_view, logout_view,generuj_opis,toggle_ulubiony,aktualizuj_opis,profil,landing_page
+from .views import signup, login_view, logout_view,generuj_opis,toggle_ulubiony,aktualizuj_opis,profil,landing_page,instrukcja
 
 urlpatterns = [
     path('generator', generuj_opis,name='generuj-opis'),
@@ -10,5 +10,8 @@ urlpatterns = [
     path('aktualizuj-opis/<int:pk>/', aktualizuj_opis, name='aktualizuj-opis'),
     path('profil/', profil, name='profil'),
     path('', landing_page, name='landing_page'),
+    path('instrukcja', instrukcja, name='instrukcja'),
+
+
 
 ]

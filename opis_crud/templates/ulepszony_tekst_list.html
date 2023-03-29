@@ -1,67 +1,81 @@
 {% extends 'base.html' %}
 
 {% block body %}
-  <div class="d-flex justify-content-center my-4">
+<div class="container my-4">
     <div class="row">
-      <div class="container col-xxl-6">
-        <h1>Twoje opisy</h1>
+        <div class="col-12">
+            <h1 class="mb-4">Twoje wygenerowane teksty</h1>
+        </div>
         <!-- Przyciski do przełączania między zakładkami -->
-        <div class="btn-group" role="group">
-          <button type="button" class="btn btn-primary" id="show-all">Wszystkie</button>
-          <button type="button" class="btn btn-outline-primary" id="show-favorites">Ulubione</button>
+        <div class="col-12 mb-4">
+            <div class="btn-group" role="group">
+                <button type="button" class="btn btn-primary" id="show-all">Wszystkie</button>
+                <button type="button" class="btn btn-outline-primary" id="show-favorites">Ulubione</button>
+            </div>
         </div>
 
         <!-- Kontener z listą wszystkich tekstów -->
-        <div id="all-texts">
-          <div class="list-group mt-3">
-            {% for tekst in ulepszone_teksty %}
-              <a href="{% url 'ulepszony_tekst_detail' tekst_id=tekst.id %}" class="list-group-item list-group-item-action">
-                {{ tekst.zastosowanie }} | {{ tekst.created_at }}
-                <span class="badge bg-primary">Zobacz</span>
-              </a>
-            {% empty %}
-              <p class="text-muted">Brak opisów do wyświetlenia.</p>
-            {% endfor %}
-          </div>
-        </div>
-
-        <!-- Kontener z listą ulubionych tekstów -->
-        <div id="favorite-texts" style="display:none;">
-          <div class="list-group mt-3">
-            {% for tekst in ulepszone_teksty %}
-              {% if tekst.ulubiony %}
-                <a href="{% url 'ulepszony_tekst_detail' tekst_id=tekst.id %}" class="list-group-item list-group-item-action">
-                  {{ tekst.zastosowanie }} | {{ tekst.created_at }} | {{ tekst.liczba_slow }}
-                  <span class="badge bg-primary">Zobacz</span>
+        <div id="all-texts" class="col-12">
+            <div class="list-group">
+                {% for tekst in ulepszone_teksty %}
+                <a href="{% url 'ulepszony_tekst_detail' tekst_id=tekst.id %}"
+                   class="list-group-item list-group-item-action mb-3">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h5 class="mb-0">{{ tekst.zastosowanie }}</h5>
+                            <small class="text-muted">{{ tekst.created_at }}</small>
+                        </div>
+                        <span class="badge bg-primary align-self-center">Zobacz</span>
+                    </div>
                 </a>
-              {% endif %}
-            {% empty %}
-              <p class="text-muted">Brak ulubionych opisów do wyświetlenia.</p>
-            {% endfor %}
-          </div>
+                {% empty %}
+                <p class="text-muted">Brak opisów do wyświetlenia.</p>
+                {% endfor %}
+            </div>
         </div>
-      </div>
+        <!-- Kontener z listą ulubionych tekstów -->
+        <div id="favorite-texts" class="col-12" style="display:none;">
+            <div class="list-group">
+                {% for tekst in ulepszone_teksty %}
+                {% if tekst.ulubiony %}
+                <a href="{% url 'ulepszony_tekst_detail' tekst_id=tekst.id %}"
+                   class="list-group-item list-group-item-action mb-3">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h5 class="mb-0">{{ tekst.zastosowanie }}</h5>
+                            <small class="text-muted">{{ tekst.created_at }}</small>
+                        </div>
+                        <span class="badge bg-primary align-self-center">Zobacz</span>
+                    </div>
+                </a>
+                {% endif %}
+                {% empty %}
+                <p class="text-muted">Brak ulubionych opisów do wyświetlenia.</p>
+                {% endfor %}
+            </div>
+        </div>
     </div>
-  </div>
 
-  <script>
-    document.getElementById('show-all').addEventListener('click', function() {
+</div>
+<script>
+  document.getElementById('show-all').addEventListener('click', function() {
       document.getElementById('all-texts').style.display = 'block';
       document.getElementById('favorite-texts').style.display = 'none';
       this.classList.add('btn-primary');
       this.classList.remove('btn-outline-primary');
       document.getElementById('show-favorites').classList.add('btn-outline-primary');
-      document.getElementById('show-favorites').classList.remove('btn-primary');
-    });
-
-    document.getElementById('show-favorites').addEventListener('click', function() {
-      document.getElementById('all-texts').style.display = 'none';
-      document.getElementById('favorite-texts').style.display = 'block';
-      this.classList.add('btn-primary');
-      this.classList.remove('btn-outline-primary');
-      document.getElementById('show-all').classList.add('btn-outline-primary');
-      document.getElementById('show-all').classList.remove('btn-primary');
+document.getElementById('show-favorites').classList.remove('btn-primary');
 });
-</script>
+document.getElementById('show-favorites').addEventListener('click', function() {
+  document.getElementById('all-texts').style.display = 'none';
+  document.getElementById('favorite-texts').style.display = 'block';
+  this.classList.add('btn-primary');
+  this.classList.remove('btn-outline-primary');
+  document.getElementById('show-all').classList.add('btn-outline-primary');
+  document.getElementById('show-all').classList.remove('btn-primary');
+});
 
+</script>
 {% endblock %}
+
+
